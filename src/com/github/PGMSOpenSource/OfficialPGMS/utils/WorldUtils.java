@@ -1,4 +1,4 @@
-package com.mcath.pgms.utils;
+package com.github.PGMSOpenSource.OfficialPGMS.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;

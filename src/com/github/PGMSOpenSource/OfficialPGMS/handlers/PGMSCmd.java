@@ -1,4 +1,4 @@
-package com.mcath.pgms.handlers;
+package com.github.PGMSOpenSource.OfficialPGMS.handlers;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

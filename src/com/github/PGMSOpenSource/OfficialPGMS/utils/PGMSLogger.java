@@ -1,11 +1,11 @@
-package com.mcath.pgms.utils;
+package com.github.PGMSOpenSource.OfficialPGMS.utils;
 
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import com.mcath.pgms.PGMS;
+import com.github.PGMSOpenSource.OfficialPGMS.PGMS;
 
 public class PGMSLogger {
 	

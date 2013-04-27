@@ -1,8 +1,8 @@
-package com.mcath.pgms;
+package com.github.PGMSOpenSource.OfficialPGMS;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mcath.pgms.utils.PGMSLogger;
+import com.github.PGMSOpenSource.OfficialPGMS.utils.PGMSLogger;
 
 public class PGMS extends JavaPlugin {
 	
