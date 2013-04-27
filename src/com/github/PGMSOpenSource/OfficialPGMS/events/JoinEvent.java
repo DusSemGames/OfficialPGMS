@@ -9,11 +9,17 @@ import com.github.PGMSOpenSource.OfficialPGMS.PGMS;
 
 public class JoinEvent implements Listener {
 	
-	PGMS plugin;
+	private PGMS plugin;
+	
+	public JoinEvent(PGMS instance) {
+		plugin = instance;
+	}
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerLoginEvent e){
 		Player player = e.getPlayer();
-		player.sendMessage(plugin.getConfig().getString("motd"));
+		if(plugin.getConfig().contains("motd")) {
+			player.sendMessage(plugin.getConfig().getString("motd"));
+		}
 	}
 }

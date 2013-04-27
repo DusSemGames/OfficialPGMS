@@ -1,5 +1,6 @@
 package com.github.PGMSOpenSource.OfficialPGMS;
 
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.PGMSOpenSource.OfficialPGMS.events.JoinEvent;
@@ -17,7 +18,12 @@ public class PGMS extends JavaPlugin {
 		init();
 		getConfig().options().copyDefaults();
 		saveConfig();
-		getServer().getPluginManager().registerEvents(new JoinEvent(), this);
+		
+	}
+	
+	public void registerEvents() {
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(new JoinEvent(this), this);
 	}
 	
 	public void init() {
