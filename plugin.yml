@@ -2,5 +2,6 @@ name: PGMS
 main: com.github.PGMSOpenSource.OfficialPGMS.PGMS
 version: 0.1
 description: An open-source version of Project Ares' PGM with extra features.
+website: https://github.com/PGMSOpenSource/OfficialPGMS
 load: STARTUP
 authors: [RainoBoy97, msalihov, Skipperguy12, XX_iiShockzz_XX]
