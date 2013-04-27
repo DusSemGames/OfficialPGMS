@@ -1,7 +1,7 @@
-package com.mcath.athena.utils;
+package com.github.PGMSOpenSource.OfficialPGMS.mysql;
 
-import com.mcath.athena.AthLog;
-import com.mcath.athena.Athena;
+import com.github.PGMSOpenSource.OfficialPGMS.PGMS;
+import com.github.PGMSOpenSource.OfficialPGMS.utils.PGMSLogger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,10 +16,10 @@ public class MySQL {
     private ResultSet rs;
     private PreparedStatement ps;
     
-    private Athena a;
+    private PGMS p;
     
-    public MySQL(Athena ath) {
-        a=ath;
+    public MySQL(PGMS pgm) {
+        p=pgm;
     }
     
     protected boolean loadDriver() {
@@ -28,27 +28,27 @@ public class MySQL {
             return true;
         }
         catch (ClassNotFoundException ex) {
-            AthLog.severe("Could not load JDBC driver!");
+            PGMSLogger.log("severe","Could not load JDBC driver!");
             ex.printStackTrace();
             return false;
         }
     }
     
     protected String getJdbcUrl() {
-        String host=a.getConfig().getString("database.hostname");
-        String port=a.getConfig().getString("database.port");
-        String name=a.getConfig().getString("database.name");
+        String host=p.getConfig().getString("database.hostname");
+        String port=p.getConfig().getString("database.port");
+        String name=p.getConfig().getString("database.name");
         String url="jdbc:mysql://"+host+":"+port+"/"+name;
         return url;
     }
     
     protected String getUsername() {
-        String user=a.getConfig().getString("database.username");
+        String user=p.getConfig().getString("database.username");
         return user;
     }
     
     protected String getPassword() {
-        String pass=a.getConfig().getString("database.password");
+        String pass=p.getConfig().getString("database.password");
         return pass;
     }
     
@@ -59,7 +59,7 @@ public class MySQL {
                 return true;
             }
             catch (SQLException ex) {
-                AthLog.severe("Could not connect to database!");
+                PGMSLogger.log("severe","Could not connect to database!");
                 ex.printStackTrace();
                 return false;
             }
@@ -80,7 +80,7 @@ public class MySQL {
                 }
             }
             catch (SQLException ex) {
-                AthLog.severe("Database error!");
+                PGMSLogger.log("severe","Database error!");
                 ex.printStackTrace();
                 return false;
             }
@@ -98,13 +98,13 @@ public class MySQL {
                 return rs;
             }
             catch (SQLException ex) {
-                AthLog.severe("Database error!");
+                PGMSLogger.log("severe","Database error!");
                 ex.printStackTrace();
                 return null;
             }
         }
         else {
-            AthLog.severe("Database error!");
+            PGMSLogger.log("severe","Database error!");
             return null;
         }
     }
@@ -117,13 +117,13 @@ public class MySQL {
                 return rs;
             }
             catch (SQLException ex) {
-                AthLog.severe("Database error!");
+                PGMSLogger.log("severe","Database error!");
                 ex.printStackTrace();
                 return null;
             }
         }
         else {
-            AthLog.severe("Database error!");
+            PGMSLogger.log("severe","Database error!");
             return null;
         }
     }
@@ -135,13 +135,13 @@ public class MySQL {
                 return ps;
             }
             catch (SQLException ex) {
-                AthLog.severe("Database error!");
+                PGMSLogger.log("severe","Database error!");
                 ex.printStackTrace();
                 return null;
             }
         }
         else {
-            AthLog.severe("Database error!");
+            PGMSLogger.log("severe","Database error!");
             return null;
         }
     }
@@ -154,7 +154,7 @@ public class MySQL {
             }
             return count;
         } catch (SQLException ex) {
-            AthLog.severe("Database error!");
+            PGMSLogger.log("severe","Database error!");
             ex.printStackTrace();
             return count;
         }

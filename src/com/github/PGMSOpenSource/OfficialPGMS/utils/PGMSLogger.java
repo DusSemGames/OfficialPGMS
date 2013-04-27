@@ -33,6 +33,9 @@ public class PGMSLogger {
 		case "severe":
 			log.severe(prefix + msg);
 			break;
+                case "debug":
+                        prefix="[" + pdf.getName() + "-DEBUG]";
+                        log.info(prefix + msg);
 		}
 	}
 
