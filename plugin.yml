@@ -1,4 +1,6 @@
 name: PGMS
 main: com.mcath.pgms.PGMS
 version: 0.1
+description: An open-source version of Project Ares' PGM with extra features.
+load: STARTUP
 authors: [RainoBoy97, msalihov, Skipperguy12, XX_iiShockzz_XX]
