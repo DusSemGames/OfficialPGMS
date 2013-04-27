@@ -1,7 +1,7 @@
 OfficialPGMS
 ============
 
-A plugin in development by skipperguy12, Rainoboy, msalihov, and XX_iiShockzz_XX!
+A plugin in development by Skipperguy12, RainoBoy97, Msalihov, and XX_iiShockzz_XX!
 
 This plugin is aimed to be a public, open source version of the plugin used on Project Ares, PGM
 
