@@ -58,13 +58,15 @@ public class PlayerListener implements Listener
 	{
 		//TODO: Ban checking
 	}
-
+	
+	@EventHandler
 	public void PlayerQuit(PlayerQuitEvent e)
 	{
 		//TODO:
-		//Remove player from any lists etc.
+		TeamUtils.clearPlayer(e.getPlayer().getName());
 	}
 
+	@EventHandler
 	public void PlayerEnterPortal(EntityPortalEvent e)
 	{
 		if(e.getEntity() instanceof Player)

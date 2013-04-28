@@ -83,6 +83,15 @@ public class TeamUtils
 		return team2.size();
 	}
 	
+	public static void clearPlayer(String s)
+	{
+		if(team1.contains(s))
+			team1.remove(s);
+		if(team2.contains(s))
+			team2.remove(s);
+		if(observers.contains(s))
+			observers.remove(s);
+	}
 	
 	
 }
