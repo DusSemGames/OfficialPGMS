@@ -8,18 +8,17 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import com.github.PGMSOpenSource.OfficialPGMS.PGMS;
 
 public class JoinEvent implements Listener {
-	
+
 	private PGMS plugin;
-	
+
 	public JoinEvent(PGMS instance) {
 		plugin = instance;
 	}
-	
+
 	@EventHandler
-	public void onPlayerJoin(PlayerLoginEvent e){
+	public void onPlayerJoin(PlayerLoginEvent e) {
 		Player player = e.getPlayer();
-		if(plugin.getConfig().contains("motd")) {
-			player.sendMessage(plugin.getConfig().getString("motd"));
-		}
+		String motd = plugin.getConfig().getString("motd");
+		player.sendMessage(motd);
 	}
 }
