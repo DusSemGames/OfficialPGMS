@@ -17,6 +17,22 @@ public class PGMSLogger {
 	public static void log(String msg) {
 		log("info", msg);
 	}
+        
+        public static void info(String msg) {
+            log("info",msg);
+        }
+        
+        public static void warning(String msg) {
+            log("warning",msg);
+        }
+        
+        public static void severe(String msg) {
+            log("severe",msg);
+        }
+        
+        public static void debug(String msg) {
+            log("debug",msg);
+        }
 	
 	public static void log(String level, String msg) {
 		Logger log = Bukkit.getLogger();
@@ -38,5 +54,5 @@ public class PGMSLogger {
                         log.info(prefix + msg);
 		}
 	}
-
+        
 }
