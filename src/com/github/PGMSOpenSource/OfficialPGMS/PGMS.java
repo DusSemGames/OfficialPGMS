@@ -16,6 +16,7 @@ public class PGMS extends JavaPlugin {
 	
 	public void onEnable() {
 		init();
+		registerEvents();
 	}
 	
 	public void registerEvents() {
