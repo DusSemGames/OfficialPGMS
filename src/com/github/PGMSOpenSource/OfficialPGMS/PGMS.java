@@ -16,9 +16,6 @@ public class PGMS extends JavaPlugin {
 	
 	public void onEnable() {
 		init();
-		getConfig().options().copyDefaults();
-		saveConfig();
-		
 	}
 	
 	public void registerEvents() {
