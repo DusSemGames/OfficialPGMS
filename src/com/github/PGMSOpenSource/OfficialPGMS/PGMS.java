@@ -4,6 +4,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.PGMSOpenSource.OfficialPGMS.listeners.JoinListener;
+import com.github.PGMSOpenSource.OfficialPGMS.listeners.LoginListener;
 import com.github.PGMSOpenSource.OfficialPGMS.utils.PGMSLogger;
 
 public class PGMS extends JavaPlugin {
@@ -24,6 +25,7 @@ public class PGMS extends JavaPlugin {
 	public void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new JoinListener(this), this);
+		pm.registerEvents(new LoginListener(), this);
 	}
 	
 	public void init() {
