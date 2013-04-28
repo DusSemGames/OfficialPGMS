@@ -1,5 +1,7 @@
 package com.github.PGMSOpenSource.OfficialPGMS.listeners;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,12 +38,14 @@ public class PlayerListener implements Listener
 		Player p = e.getPlayer();
 		if(plugin.getConfig().contains("motd"))
 		{
-			for(String s : plugin.getConfig().getStringList("motd"))
+			List<String> motd = plugin.getConfig().getStringList("motd");
+			for(String s :motd)
 			{
-				s = s.replaceAll("&", "§");
 				p.sendMessage(s);
 			}
 		}
+		
+		TeamUtils.setObserver(p.getName());
 	}
 
 	@EventHandler
@@ -73,7 +77,9 @@ public class PlayerListener implements Listener
 	{
 		if(TeamUtils.isObserver(e.getPlayer().getName()))
 		{
+			plugin.getServer().broadcastMessage("YOU ARE AN OBSERVER BROHAM");
 			e.setCancelled(true);
+			plugin.getServer().broadcastMessage("YOU AINT NO OBSERVER");
 		}
 	}
 
