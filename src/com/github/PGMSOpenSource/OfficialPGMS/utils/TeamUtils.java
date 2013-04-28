@@ -32,7 +32,57 @@ public class TeamUtils
 	
 	public static void setObserver(String s)
 	{
+		if(isTeam1(s))
+		{
+			team1.remove(s);
+		}
+		else if(isTeam2(s))
+		{
+			team2.remove(s);
+		}
+		else
+		{
+			return;
+		}
 		observers.add(s);
 	}
+	
+	public static void setTeam1(String s)
+	{
+		if(isTeam2(s))
+		{
+			return;
+		}
+		else if(isObserver(s))
+		{
+			observers.remove(s);
+			team1.add(s);
+		}
+	}
+	
+	public static void setTeam2(String s)
+	{
+		if(isTeam1(s))
+		{
+			return;
+		}
+		else if(isObserver(s))
+		{
+			observers.remove(s);
+			team2.add(s);
+		}
+	}
+	
+	public static int getTeam1Size()
+	{
+		return team1.size();
+	}
+	
+	public static int getTeam2Size()
+	{
+		return team2.size();
+	}
+	
+	
 	
 }

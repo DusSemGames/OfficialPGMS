@@ -11,8 +11,13 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -67,6 +72,51 @@ public class PlayerListener implements Listener
 			e.setCancelled(true);
 		}
 	}
+	
+	@EventHandler
+	public void ChatFormat(AsyncPlayerChatEvent e)
+	{
+		if(TeamUtils.isObserver(e.getPlayer().getName()))
+		{
+			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.AQUA + "O" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + e.getMessage()); 
+		}
+		else if(TeamUtils.isTeam1(e.getPlayer().getName()))
+		{
+			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.DARK_RED + "R" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + e.getMessage()); 
+		}
+		else if(TeamUtils.isTeam2(e.getPlayer().getName()))
+		{
+			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.DARK_BLUE + "B" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + e.getMessage()); 
+		}
+	}
+	
+	@EventHandler
+	public void DeathFormat(PlayerDeathEvent e)
+	{
+		Player p = e.getEntity();
+		String deathmessage = e.getDeathMessage();
+		if(p.getKiller() != null && p.getKiller() instanceof Player)
+		{
+			Player k = p.getKiller();
+			if(TeamUtils.isTeam1(k.getName()))
+			{
+				deathmessage = deathmessage.replace(k.getName(), ChatColor.DARK_RED + p.getName() + ChatColor.RESET);
+			}
+			else if(TeamUtils.isTeam2(k.getName()))
+			{
+				deathmessage = deathmessage.replace(k.getName(), ChatColor.DARK_BLUE + p.getName() + ChatColor.RESET);
+			}
+		}
+		if(TeamUtils.isTeam1(p.getName()))
+		{
+			deathmessage = deathmessage.replace(p.getName(), ChatColor.DARK_RED + p.getName() + ChatColor.RESET);
+		}
+		else if(TeamUtils.isTeam2(p.getName()))
+		{
+			deathmessage = deathmessage.replace(p.getName(), ChatColor.DARK_BLUE + p.getName() + ChatColor.RESET);
+		}
+		e.setDeathMessage(deathmessage);
+	}
 
 	/*
 	 * HANDLE OBSERVER STUFF HERE
@@ -77,9 +127,7 @@ public class PlayerListener implements Listener
 	{
 		if(TeamUtils.isObserver(e.getPlayer().getName()))
 		{
-			plugin.getServer().broadcastMessage("YOU ARE AN OBSERVER BROHAM");
 			e.setCancelled(true);
-			plugin.getServer().broadcastMessage("YOU AINT NO OBSERVER");
 		}
 	}
 
@@ -97,7 +145,7 @@ public class PlayerListener implements Listener
 	{
 		if(e.getDamager() instanceof Player)
 		{
-			Player p = (Player) e.getEntity();
+			Player p = (Player) e.getDamager();
 			if(TeamUtils.isObserver(p.getName()))
 			{
 				if(e.getEntity() instanceof Player)
@@ -106,13 +154,16 @@ public class PlayerListener implements Listener
 					Player attacked = (Player) e.getEntity();
 					if(attacked.getHealth() != 0)
 					{
-						p.sendMessage(ChatColor.YELLOW + attacked.getName() + " Has " + TextUtils.colourInts(attacked.getHealth()) + "/20" + ChatColor.YELLOW + " health");
-						p.sendMessage(ChatColor.YELLOW + attacked.getName() + " Has " + TextUtils.colourInts(attacked.getFoodLevel()) + "/20" + ChatColor.YELLOW + " hunger");
+						p.sendMessage(ChatColor.YELLOW + attacked.getName() + " Has " + TextUtils.ColourInts(attacked.getHealth()) + "/20" + ChatColor.YELLOW + " health");
+						p.sendMessage(ChatColor.YELLOW + attacked.getName() + " Has " + TextUtils.ColourInts(attacked.getFoodLevel()) + "/20" + ChatColor.YELLOW + " hunger");
 						if(attacked.getActivePotionEffects().size() > 0)
 						{
 							for(PotionEffect pot : attacked.getActivePotionEffects())
 							{
-								p.sendMessage(ChatColor.YELLOW + p.getName() + "Has the potion effect " + pot.getType().getName() + " " + (pot.getAmplifier() + 1) + "it lasts " + pot.getDuration());
+								String amp = TextUtils.numberToRoman(pot.getAmplifier() + 1);
+								int duration = (pot.getDuration() / 20);
+								String potion = TextUtils.NamePotions(pot.getType().getName());
+								p.sendMessage(ChatColor.DARK_RED + attacked.getName() + ChatColor.YELLOW + " Has the potion effect " + ChatColor.DARK_PURPLE + potion + " " + amp + ChatColor.YELLOW +" it lasts " + ChatColor.DARK_PURPLE + duration + " seconds");
 							}
 						}
 					}
@@ -154,7 +205,7 @@ public class PlayerListener implements Listener
 		if(e.getRightClicked() instanceof Player)
 		{
 			Player p = (Player) e.getRightClicked();
-			if(TeamUtils.isObserver(e.getPlayer().getName()) && !TeamUtils.isObserver(p.getName()))
+			if(TeamUtils.isObserver(e.getPlayer().getName()))
 			{
 				e.getPlayer().openInventory(p.getInventory());
 			}
@@ -167,6 +218,41 @@ public class PlayerListener implements Listener
 		if(TeamUtils.isObserver(e.getPlayer().getName()))
 		{
 			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void ObserverUseContainer(InventoryClickEvent e)
+	{
+		if(e.getWhoClicked() instanceof Player)
+		{
+			Player p = (Player) e.getWhoClicked();
+			if(TeamUtils.isObserver(p.getName()))
+			{
+			e.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void ObserverInteract(PlayerInteractEvent e)
+	{
+		if(TeamUtils.isObserver(e.getPlayer().getName()))
+		{
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void ObserversPotion(PotionSplashEvent e)
+	{
+		if(e.getPotion().getShooter() instanceof Player)
+		{
+			Player p = (Player) e.getPotion().getShooter();
+			if(TeamUtils.isObserver(p.getName()))
+			{
+				e.setCancelled(true);
+			}
 		}
 	}
 }

@@ -3,6 +3,7 @@ package com.github.PGMSOpenSource.OfficialPGMS;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.PGMSOpenSource.OfficialPGMS.commands.JoinCommand;
 import com.github.PGMSOpenSource.OfficialPGMS.listeners.PlayerListener;
 import com.github.PGMSOpenSource.OfficialPGMS.utils.PGMSLogger;
 
@@ -16,10 +17,11 @@ public class PGMS extends JavaPlugin {
 	
 	public void onEnable() {
 		init();
-		registerEvents();
+		RegisterEvents();
+		this.getCommand("join").setExecutor(new JoinCommand(plugin));
 	}
 	
-	public void registerEvents() {
+	public void RegisterEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerListener(this), this);
 	}
