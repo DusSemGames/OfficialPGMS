@@ -2,16 +2,19 @@ package com.github.PGMSOpenSource.OfficialPGMS.listeners;
 
 import java.util.List;
 
-import org.bukkit.block.*;
-
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
@@ -26,6 +29,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 
 import com.github.PGMSOpenSource.OfficialPGMS.PGMS;
@@ -85,15 +89,15 @@ public class PlayerListener implements Listener
 	{
 		if(TeamUtils.isObserver(e.getPlayer().getName()))
 		{
-			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.AQUA + "O" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + e.getMessage()); 
+			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.AQUA + "O" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + ChatColor.WHITE + e.getMessage()); 
 		}
 		else if(TeamUtils.isTeam1(e.getPlayer().getName()))
 		{
-			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.DARK_RED + "R" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + e.getMessage()); 
+			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.DARK_RED + "R" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + ChatColor.WHITE +e.getMessage()); 
 		}
 		else if(TeamUtils.isTeam2(e.getPlayer().getName()))
 		{
-			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.DARK_BLUE + "B" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + e.getMessage()); 
+			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.DARK_BLUE + "B" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + ChatColor.WHITE + e.getMessage()); 
 		}
 	}
 	
@@ -139,11 +143,11 @@ public class PlayerListener implements Listener
 			Player k = p.getKiller();
 			if(TeamUtils.isTeam1(k.getName()))
 			{
-				deathmessage = deathmessage.replace(k.getName(), ChatColor.DARK_RED + p.getName() + ChatColor.RESET);
+				deathmessage = deathmessage.replace(k.getName(), ChatColor.DARK_RED + k.getName() + ChatColor.RESET);
 			}
 			else if(TeamUtils.isTeam2(k.getName()))
 			{
-				deathmessage = deathmessage.replace(k.getName(), ChatColor.DARK_BLUE + p.getName() + ChatColor.RESET);
+				deathmessage = deathmessage.replace(k.getName(), ChatColor.DARK_BLUE + k.getName() + ChatColor.RESET);
 			}
 		}
 		if(TeamUtils.isTeam1(p.getName()))
@@ -193,8 +197,10 @@ public class PlayerListener implements Listener
 					Player attacked = (Player) e.getEntity();
 					if(attacked.getHealth() != 0)
 					{
-						p.sendMessage(ChatColor.YELLOW + attacked.getName() + " Has " + TextUtils.ColourInts(attacked.getHealth()) + "/20" + ChatColor.YELLOW + " health");
-						p.sendMessage(ChatColor.YELLOW + attacked.getName() + " Has " + TextUtils.ColourInts(attacked.getFoodLevel()) + "/20" + ChatColor.YELLOW + " hunger");
+						p.sendMessage(ChatColor.AQUA + "------------------" + ChatColor.YELLOW + attacked.getDisplayName() + "'s Information" + ChatColor.AQUA + "------------------");
+						p.sendMessage(TextUtils.ColourInts(attacked.getHealth()) + "/20" + ChatColor.YELLOW + " health");
+						p.sendMessage(TextUtils.ColourInts(attacked.getFoodLevel()) + "/20" + ChatColor.YELLOW + " hunger");
+						p.sendMessage(ChatColor.AQUA + "------------------" + ChatColor.YELLOW + attacked.getDisplayName() + "'s Potion Effects" + ChatColor.AQUA + "------------------");
 						if(attacked.getActivePotionEffects().size() > 0)
 						{
 							for(PotionEffect pot : attacked.getActivePotionEffects())
@@ -202,8 +208,12 @@ public class PlayerListener implements Listener
 								String amp = TextUtils.numberToRoman(pot.getAmplifier() + 1);
 								int duration = (pot.getDuration() / 20);
 								String potion = TextUtils.NamePotions(pot.getType().getName());
-								p.sendMessage(ChatColor.DARK_RED + attacked.getName() + ChatColor.YELLOW + " Has the potion effect " + ChatColor.DARK_PURPLE + potion + " " + amp + ChatColor.YELLOW +" it lasts " + ChatColor.DARK_PURPLE + duration + " seconds");
+								p.sendMessage(ChatColor.DARK_PURPLE + potion + " " + amp + "(" + duration + " seconds)");
 							}
+						}
+						else
+						{
+							p.sendMessage(ChatColor.DARK_PURPLE + "None!");
 						}
 					}
 					else
@@ -294,5 +304,62 @@ public class PlayerListener implements Listener
 			}
 		}
 	}
+	
+	//ARROW TRACKING ALL CREDITS TO YUKONAPPLEGEEK (Minor edits by Guru_Fraser)
+	   @EventHandler
+	    public void onPlayerDeath(PlayerDeathEvent event) {
+	        Player player = event.getEntity();
+
+	        if (player.getLastDamageCause().getCause() == DamageCause.PROJECTILE && player.getKiller() instanceof Player) {
+	            //Checks to make sure the player has the arrow metadata
+	            if (player.hasMetadata("ShotLocationX") && player.hasMetadata("ShotLocationY") && player.hasMetadata("ShotLocationZ")) {
+	                Location shotLocation = new Location(player.getWorld(), player.getMetadata("ShotLocationX").get(0).asDouble(), player.getMetadata("ShotLocationY").get(0).asDouble(), player.getMetadata("ShotLocationZ").get(0).asDouble());
+	                int distance = (int) player.getLocation().distance(shotLocation);
+	                event.setDeathMessage(TextUtils.colourName(player.getName()) + " was shot by " + TextUtils.colourName(player.getKiller().getName()) + " (" + distance + " blocks)");
+	            }
+	        }
+	    }
+
+	    @EventHandler
+	    public void onBowShoot(EntityShootBowEvent event) {
+	        if (event.getEntity() instanceof Player) {
+	            //Saves the players location to the arrow using metadata
+	            Location shotLocation = event.getEntity().getLocation();
+	            event.getProjectile().setMetadata("ShotLocationX", new FixedMetadataValue(plugin, shotLocation.getX()));
+	            event.getProjectile().setMetadata("ShotLocationY", new FixedMetadataValue(plugin, shotLocation.getY()));
+	            event.getProjectile().setMetadata("ShotLocationZ", new FixedMetadataValue(plugin, shotLocation.getZ()));
+	        }
+	    }
+
+	    @EventHandler
+	    public void onArrowHitPlayer(EntityDamageByEntityEvent event) {
+	        if (event.getEntity() instanceof Player && event.getDamager() instanceof Projectile) {
+	            Entity damageEntity = event.getDamager();
+	            Entity player = event.getEntity();
+
+	            if (damageEntity.hasMetadata("ShotLocationX") && damageEntity.hasMetadata("ShotLocationY") && damageEntity.hasMetadata("ShotLocationZ")) {
+	                if (player.hasMetadata("ShotLocationX") &&  player.hasMetadata("ShotLocationY") &&  player.hasMetadata("ShotLocationZ")) {
+
+	                    // Reset the current metadata to prevent huge list
+	                    player.removeMetadata("ShotLocationX", plugin);
+	                    player.removeMetadata("ShotLocationY", plugin);
+	                    player.removeMetadata("ShotLocationZ", plugin);
+	                }
+	                //Saves the new metadata to the player
+	                Location shotLocation = new Location(event.getEntity().getWorld(), damageEntity.getMetadata("ShotLocationX").get(0).asDouble(), damageEntity.getMetadata("ShotLocationY").get(0).asDouble(), damageEntity.getMetadata("ShotLocationZ").get(0).asDouble());
+	                player.setMetadata("ShotLocationX", new FixedMetadataValue(plugin, shotLocation.getX()));
+	                player.setMetadata("ShotLocationY", new FixedMetadataValue(plugin, shotLocation.getY()));
+	                player.setMetadata("ShotLocationZ", new FixedMetadataValue(plugin, shotLocation.getZ()));
+	            }
+
+	            //Calculate if the shot is a headshot
+	            Location playerLocation = player.getLocation();
+	            Location damageEntityLocation = damageEntity.getLocation();
+	            if (damageEntityLocation.getY() > (playerLocation.getY()+1.52)) {
+	                Projectile projectile = (Projectile) event.getDamager();
+	                ((CommandSender) projectile.getShooter()).sendMessage("Headshot!");
+	            }
+	        }
+	    }
 }
 
