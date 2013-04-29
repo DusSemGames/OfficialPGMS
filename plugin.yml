@@ -9,4 +9,4 @@ database: true
 commands:
   join:
     description: Join the game.
-    permission: pgms.join
+    
