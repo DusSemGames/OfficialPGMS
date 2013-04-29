@@ -16,6 +16,7 @@ public class PGMS extends JavaPlugin {
 	}
 	
 	public void onEnable() {
+		plugin = this;
 		init();
 		RegisterEvents();
 		this.getCommand("join").setExecutor(new JoinCommand(plugin));
