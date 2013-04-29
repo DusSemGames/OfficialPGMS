@@ -2,8 +2,11 @@ package com.github.PGMSOpenSource.OfficialPGMS.listeners;
 
 import java.util.List;
 
+import net.minecraft.server.v1_5_R2.Block;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -11,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,6 +31,7 @@ import org.bukkit.potion.PotionEffect;
 import com.github.PGMSOpenSource.OfficialPGMS.PGMS;
 import com.github.PGMSOpenSource.OfficialPGMS.utils.TeamUtils;
 import com.github.PGMSOpenSource.OfficialPGMS.utils.TextUtils;
+import com.github.PGMSOpenSource.OfficialPGMS.utils.TrackingUtils;
 
 public class PlayerListener implements Listener
 {
@@ -89,6 +94,38 @@ public class PlayerListener implements Listener
 		else if(TeamUtils.isTeam2(e.getPlayer().getName()))
 		{
 			e.setFormat(ChatColor.YELLOW + "[" + ChatColor.DARK_BLUE + "B" + ChatColor.YELLOW + "] " + e.getPlayer().getName() + ": " + e.getMessage()); 
+		}
+	}
+	
+	@EventHandler(ignoreCancelled=true)
+	public void TNTRegistry(BlockPlaceEvent e)
+	{
+		if(e.getBlock().getTypeId() == 46) //TNT
+		{
+			String p = e.getPlayer().getName();
+			TrackingUtils.trackTNTPlace(e.getBlock(), p);
+		}
+		else if(e.getBlock().getTypeId() == 23)//Dispenser
+		{
+			
+		}
+	}
+	
+	@EventHandler(ignoreCancelled=true)
+	public void TNTDeRegistry(BlockBreakEvent e)
+	{
+		if(e.getBlock().getTypeId() == 46) //TNT
+		{
+			TrackingUtils.removeTNTTracking(e.getBlock());
+		}
+	}
+	
+	@EventHandler(ignoreCancelled=true)
+	public void TNTIgnite(ExplosionPrimeEvent e)
+	{
+		if(e.getEntity() instanceof TNTPrimed)
+		{
+			TNTPrimed TNT = (TNTPrimed) e.getEntity();
 		}
 	}
 	
