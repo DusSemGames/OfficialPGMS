@@ -27,35 +27,70 @@ public class JoinCommand implements CommandExecutor
 			{
 				if(args[0].equalsIgnoreCase("red"))
 				{
-					TeamUtils.setTeam1(p.getName());
-					p.sendMessage("You have successfully joined the " + ChatColor.DARK_RED + " red team");
-					return true;
+					if(TeamUtils.setTeam1(p.getName()))
+					{
+						p.sendMessage("You have successfully joined the " + ChatColor.DARK_RED + " red team");
+						return true;
+					}
+					else
+					{
+						p.sendMessage("You could not join red team at this time");
+						return false;
+					}
 				}
 				else if(args[0].equalsIgnoreCase("blue"))
 				{
-					TeamUtils.setTeam2(p.getName());
-					p.sendMessage("You have successfully joined the " + ChatColor.DARK_BLUE + " blue team");
-					return true;
+					if(TeamUtils.setTeam2(p.getName()))
+					{
+						p.sendMessage("You have successfully joined the " + ChatColor.DARK_BLUE + " blue team");
+						return true;
+					}
+					else
+					{
+						p.sendMessage("You could not join blue team at this time");
+						return false;
+					}
 				}
 				else if(args[0].equalsIgnoreCase("obs"))
 				{
-					TeamUtils.setObserver(p.getName());
-					p.sendMessage("You have successfully joined the " + ChatColor.AQUA + " observers");
-					return true;
+					if(TeamUtils.setObserver(p.getName()))
+					{
+						p.sendMessage("You have successfully joined the " + ChatColor.AQUA + " observers");
+						return true;
+					}
+					else
+					{
+						p.sendMessage("You could not join observers at this time");
+						return false;
+					}
 				}
 					return false;
 			}
 			if(TeamUtils.getTeam1Size() > TeamUtils.getTeam2Size())
 			{
-				TeamUtils.setTeam2(p.getName());
-				p.sendMessage("You have successfully joined the " + ChatColor.DARK_BLUE + "blue team");
-				return true;
+				if(TeamUtils.setTeam2(p.getName()))
+				{
+					p.sendMessage("You have successfully joined the " + ChatColor.DARK_BLUE + "blue team");
+					return true;
+				}
+				else
+				{
+					p.sendMessage("You could not join a team");
+					return false;
+				}
 			}
 			else
 			{
-				TeamUtils.setTeam1(p.getName());
-				p.sendMessage("You have successfully joined the " + ChatColor.DARK_RED + "red team");
-				return true;
+				if(TeamUtils.setTeam1(p.getName()))
+				{
+					p.sendMessage("You have successfully joined the " + ChatColor.DARK_RED + "red team");
+					return true;
+				}
+				else
+				{
+					p.sendMessage("You could not join a team");
+					return false;
+				}
 			}
 		}
 		return true;

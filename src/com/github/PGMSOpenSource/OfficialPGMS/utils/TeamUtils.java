@@ -30,7 +30,7 @@ public class TeamUtils
 		return team2.contains(s);
 	}
 	
-	public static void setObserver(String s)
+	public static boolean setObserver(String s)
 	{
 		if(isTeam1(s))
 		{
@@ -40,37 +40,40 @@ public class TeamUtils
 		{
 			team2.remove(s);
 		}
-		else
-		{
-			return;
-		}
 		observers.add(s);
+		return true;
 	}
 	
-	public static void setTeam1(String s)
+	public static boolean setTeam1(String s)
 	{
 		if(isTeam2(s))
-		{
-			return;
-		}
+			return false;
+		else if(isTeam1(s))
+			return false;
 		else if(isObserver(s))
 		{
 			observers.remove(s);
 			team1.add(s);
+			return true;
 		}
+		return false;
 	}
 	
-	public static void setTeam2(String s)
+	public static boolean setTeam2(String s)
 	{
 		if(isTeam1(s))
 		{
-			return;
+			return false;
 		}
+		else if(isTeam2(s))
+			return false;
 		else if(isObserver(s))
 		{
 			observers.remove(s);
 			team2.add(s);
+			return true;
 		}
+		return false;
 	}
 	
 	public static int getTeam1Size()
