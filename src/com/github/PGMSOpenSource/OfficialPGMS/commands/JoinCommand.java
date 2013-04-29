@@ -29,12 +29,12 @@ public class JoinCommand implements CommandExecutor
 				{
 					if(TeamUtils.setTeam1(p.getName()))
 					{
-						p.sendMessage("You have successfully joined the " + ChatColor.DARK_RED + " red team");
+						p.sendMessage("You have successfully joined the " + ChatColor.DARK_RED + " Red team");
 						return true;
 					}
 					else
 					{
-						p.sendMessage("You could not join red team at this time");
+						p.sendMessage("You could not join Red team at this time");
 						return false;
 					}
 				}
@@ -42,7 +42,7 @@ public class JoinCommand implements CommandExecutor
 				{
 					if(TeamUtils.setTeam2(p.getName()))
 					{
-						p.sendMessage("You have successfully joined the " + ChatColor.DARK_BLUE + " blue team");
+						p.sendMessage("You have successfully joined the " + ChatColor.DARK_BLUE + " Blue team");
 						return true;
 					}
 					else
@@ -55,7 +55,7 @@ public class JoinCommand implements CommandExecutor
 				{
 					if(TeamUtils.setObserver(p.getName()))
 					{
-						p.sendMessage("You have successfully joined the " + ChatColor.AQUA + " observers");
+						p.sendMessage("You have successfully joined the " + ChatColor.AQUA + " Observers");
 						return true;
 					}
 					else
@@ -70,7 +70,7 @@ public class JoinCommand implements CommandExecutor
 			{
 				if(TeamUtils.setTeam2(p.getName()))
 				{
-					p.sendMessage("You have successfully joined the " + ChatColor.DARK_BLUE + "blue team");
+					p.sendMessage("You have successfully joined the " + ChatColor.DARK_BLUE + "Blue team");
 					return true;
 				}
 				else
@@ -83,7 +83,7 @@ public class JoinCommand implements CommandExecutor
 			{
 				if(TeamUtils.setTeam1(p.getName()))
 				{
-					p.sendMessage("You have successfully joined the " + ChatColor.DARK_RED + "red team");
+					p.sendMessage("You have successfully joined the " + ChatColor.DARK_RED + "Red team");
 					return true;
 				}
 				else
