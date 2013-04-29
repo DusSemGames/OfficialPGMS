@@ -6,3 +6,6 @@ website: https://github.com/PGMSOpenSource/OfficialPGMS
 load: STARTUP
 authors: [RainoBoy97, msalihov, Skipperguy12, XX_iiShockzz_XX]
 database: true
+commands:
+  join:
+    description: Join the game.
