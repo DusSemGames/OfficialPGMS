@@ -28,7 +28,7 @@ public class PGMS extends JavaPlugin {
 	}
 	
 	public void init() {
-		new PGMSLogger(this);
+	        new PGMSLogger(this);
 	}
 
 }
